@@ -18,5 +18,5 @@
             "email": "oneone1997@cloud.com"
         }
     ],
-    "minimum-stability": "dev"
+    "minimum-stability": "stable"
 }
