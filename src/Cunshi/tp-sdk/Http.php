@@ -6,9 +6,9 @@ class Http
 {
     /**
      * 发送一个POST请求
-     * @param string $url     请求URL
-     * @param array  $params  请求参数
-     * @param array  $options 扩展参数
+     * @param string $url 请求URL
+     * @param array $params 请求参数
+     * @param array $options 扩展参数
      * @return mixed|string
      */
     public static function post($url, $params = [], $options = [])
@@ -19,9 +19,9 @@ class Http
 
     /**
      * 发送一个GET请求
-     * @param string $url     请求URL
-     * @param array  $params  请求参数
-     * @param array  $options 扩展参数
+     * @param string $url 请求URL
+     * @param array $params 请求参数
+     * @param array $options 扩展参数
      * @return mixed|string
      */
     public static function get($url, $params = [], $options = [])
@@ -32,10 +32,10 @@ class Http
 
     /**
      * CURL发送Request请求,含POST和REQUEST
-     * @param string $url     请求的链接
-     * @param mixed  $params  传递的参数
-     * @param string $method  请求的方法
-     * @param mixed  $options CURL的参数
+     * @param string $url 请求的链接
+     * @param mixed $params 传递的参数
+     * @param string $method 请求的方法
+     * @param mixed $options CURL的参数
      * @return array
      */
     public static function sendRequest($url, $params = [], $method = 'POST', $options = [])
@@ -84,10 +84,10 @@ class Http
             $info = curl_getinfo($ch);
             curl_close($ch);
             return [
-                'ret'   => false,
+                'ret' => false,
                 'errno' => $errno,
-                'msg'   => $err,
-                'info'  => $info,
+                'msg' => $err,
+                'info' => $info,
             ];
         }
         curl_close($ch);
@@ -99,8 +99,8 @@ class Http
 
     /**
      * 异步发送一个请求
-     * @param string $url    请求的链接
-     * @param mixed  $params 请求的参数
+     * @param string $url 请求的链接
+     * @param mixed $params 请求的参数
      * @param string $method 请求的方法
      * @return boolean TRUE
      */
@@ -153,8 +153,8 @@ class Http
     /**
      * 发送文件到客户端
      * @param string $file
-     * @param bool   $delaftersend
-     * @param bool   $exitaftersend
+     * @param bool $delaftersend
+     * @param bool $exitaftersend
      */
     public static function sendToBrowser($file, $delaftersend = true, $exitaftersend = true)
     {
