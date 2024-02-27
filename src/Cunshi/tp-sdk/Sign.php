@@ -1,8 +1,10 @@
 <?php
 
-namespace extend\wechat;
+namespace Cunshi\TpSdk;
 
-use think\facade\Env;
+
+
+use http\Env;
 
 class Sign
 {

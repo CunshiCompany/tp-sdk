@@ -1,6 +1,6 @@
 <?php
 
-namespace extend\wechat;
+namespace Cunshi\TpSdk;
 
 /**
  * error code 说明.

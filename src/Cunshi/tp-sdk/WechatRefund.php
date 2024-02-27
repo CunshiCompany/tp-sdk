@@ -1,12 +1,7 @@
 <?php
 
-namespace extend\wechat;
+namespace Cunshi\TpSdk;
 
-use extend\Http;
-use extend\Random;
-use think\facade\App;
-use think\facade\Env;
-use think\facade\Config;
 
 class WechatRefund
 {

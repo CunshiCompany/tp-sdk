@@ -1,12 +1,10 @@
 <?php
 
-namespace extend\wechat;
+namespace Cunshi\TpSdk;
 
-use extend\Http;
-use extend\Random;
-use think\exception\HttpException;
-use think\facade\App;
-use think\facade\Env;
+
+use http\Env;
+
 
 class WechatProfitSharing
 {

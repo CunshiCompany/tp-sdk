@@ -1,0 +1,22 @@
+{
+  "name": "cunshi/tp-sdk",
+  "description": "a library developed by Cunshi",
+  "type": "library",
+  "require": {
+    "php": "^7.2 || ^8.0",
+    "ext-curl": "*"
+  },
+  "license": "MIT",
+  "autoload": {
+    "psr-4": {
+      "Cunshi\\TpSdk\\": "src/Cunshi/tp-sdk"
+    }
+  },
+  "authors": [
+    {
+      "name": "oneone",
+      "email": "oneone1997@cloud.com"
+    }
+  ],
+  "minimum-stability": "stable"
+}
