@@ -14,13 +14,10 @@ class WXBizDataCrypt
 {
     private $_appid;
     private $_sessionKey;
-
-
-
-    public static $OK                = 0;
-    public static $IllegalAesKey     = -41001;
-    public static $IllegalIv         = -41002;
-    public static $IllegalBuffer     = -41003;
+    public static $OK = 0;
+    public static $IllegalAesKey = -41001;
+    public static $IllegalIv = -41002;
+    public static $IllegalBuffer = -41003;
     public static $DecodeBase64Error = -41004;
 
     /**
@@ -46,11 +43,11 @@ class WXBizDataCrypt
     public function decryptData($encrypted_data, $iv, &$data)
     {
         if (strlen($this->_sessionKey) != 24) {
-            return WXBizDataCryptErrorCode::$IllegalAesKey;
+            return WXBizDataCrypt::$IllegalAesKey;
         }
 
         if (strlen($iv) != 24) {
-            return WXBizDataCryptErrorCode::$IllegalIv;
+            return WXBizDataCrypt::$IllegalIv;
         }
 
         $aes_key = base64_decode($this->_sessionKey);
@@ -60,10 +57,10 @@ class WXBizDataCrypt
         $obj = json_decode($result);
 
         if ($obj == null || $obj->watermark->appid != $this->_appid) {
-            return WXBizDataCryptErrorCode::$IllegalBuffer;
+            return WXBizDataCrypt::$IllegalBuffer;
         }
 
         $data = $result;
-        return WXBizDataCryptErrorCode::$OK;
+        return WXBizDataCrypt::$OK;
     }
 }
