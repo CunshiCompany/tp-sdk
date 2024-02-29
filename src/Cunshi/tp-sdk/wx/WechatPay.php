@@ -1,8 +1,10 @@
 <?php
 
-namespace Cunshi\TpSdk;
+namespace Cunshi\TpSdk\wx;
 
 
+use Cunshi\TpSdk\tools\Http;
+use Cunshi\TpSdk\tools\Random;
 use http\Env;
 use HttpException;
 

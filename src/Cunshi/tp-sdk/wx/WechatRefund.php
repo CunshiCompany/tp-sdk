@@ -1,7 +1,22 @@
 <?php
 
-namespace Cunshi\TpSdk;
+namespace Cunshi\TpSdk\wx;
 
+
+use Cunshi\TpSdk\App;
+use Cunshi\TpSdk\Config;
+use Cunshi\TpSdk\Env;
+use Cunshi\TpSdk\tools\AES;
+use Cunshi\TpSdk\tools\Http;
+use Cunshi\TpSdk\tools\Random;
+use Cunshi\TpSdk\系统退款单号;
+use Cunshi\TpSdk\订单单号;
+use Cunshi\TpSdk\订单总金额;
+use Cunshi\TpSdk\退款单号;
+use Cunshi\TpSdk\退款描述;
+use Cunshi\TpSdk\退款金额;
+use function Cunshi\TpSdk\config;
+use function Cunshi\TpSdk\xml_to_array;
 
 class WechatRefund
 {

@@ -1,7 +1,9 @@
 <?php
 
-namespace Cunshi\TpSdk;
+namespace Cunshi\TpSdk\wx;
 
+
+use Cunshi\TpSdk\Env;
 
 /**
  * 对微信小程序用户加密数据的解密示例代码.
@@ -12,6 +14,14 @@ class WXBizDataCrypt
 {
     private $_appid;
     private $_sessionKey;
+
+
+
+    public static $OK                = 0;
+    public static $IllegalAesKey     = -41001;
+    public static $IllegalIv         = -41002;
+    public static $IllegalBuffer     = -41003;
+    public static $DecodeBase64Error = -41004;
 
     /**
      * 构造函数

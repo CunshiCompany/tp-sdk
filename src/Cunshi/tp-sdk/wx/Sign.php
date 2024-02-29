@@ -1,10 +1,11 @@
 <?php
 
-namespace Cunshi\TpSdk;
+namespace Cunshi\TpSdk\wx;
 
 
 
 use http\Env;
+use function Cunshi\TpSdk\format_params;
 
 class Sign
 {

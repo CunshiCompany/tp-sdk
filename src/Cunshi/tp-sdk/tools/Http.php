@@ -1,6 +1,6 @@
 <?php
 
-namespace Cunshi\TpSdk;
+namespace Cunshi\TpSdk\tools;
 
 class Http
 {
