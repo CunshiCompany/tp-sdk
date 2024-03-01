@@ -3,9 +3,8 @@
 namespace Cunshi\TpSdk\wx;
 
 
-
 use Cunshi\TpSdk\tools\Http;
-use http\Env;
+
 
 class Code2SessionApi
 {
@@ -13,8 +12,9 @@ class Code2SessionApi
 
     public function __construct($data)
     {
-        $this->_appId = Env::get('wechat.appid');
-        $this->_secret = Env::get('wechat.secret');
+        $initdata = require('../wx/conf/config.php');
+        $this->_appId = $initdata["wechat"]["appid"];
+        $this->_secret = $initdata["wechat"]["secret"];
         $this->_code = $data['code'];
     }
 
