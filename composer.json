@@ -4,7 +4,12 @@
   "type": "library",
   "require": {
     "php": "^7.2 || ^8.0",
-    "ext-curl": "*"
+    "ext-curl": "*",
+    "ext-json": "*",
+    "ext-libxml": "*",
+    "ext-simplexml": "*",
+    "ext-openssl": "*",
+    "ext-http": "*"
   },
   "license": "MIT",
   "autoload": {

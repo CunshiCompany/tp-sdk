@@ -22,8 +22,10 @@ class WechatPay
 
     public function __construct()
     {
-        $this->_appId = Env::get('wechat.appid');
-        $this->_mchId = Env::get('wechat.mch_id');
+
+        $initdata = require('../wx/conf/config.php');
+        $this->_appId = $initdata["wechat"]["appid"];
+        $this->_mchId = $initdata["wechat"]["mch_id"];
     }
 
     public static function getInstance()
@@ -80,6 +82,7 @@ class WechatPay
         return $params;
     }
 
+
     private function _unifiedOrder($openid, $out_trade_no, $total_fee, $ip)
     {
         $params = [
@@ -127,7 +130,6 @@ class WechatPay
 
         return $sign == Sign::getSign($data) ? true : false;
     }
-
 
 
     /**
