@@ -2,16 +2,14 @@
 
 namespace Cunshi\TpSdk\wx;
 
-use app\WechatConst\WxPayConfig;
+
 use Cunshi\TpSdk\tools\Http;
 use Cunshi\TpSdk\tools\Random;
 use Cunshi\TpSdk\tools\XMLUtils;
 use HttpException;
 
-
-class WechatOrderQuery
+class WechatCloseOrder
 {
-
     private static $_instance = null;
     private $appid;
     private $mch_id;
@@ -19,17 +17,12 @@ class WechatOrderQuery
 //    private $sign;
     private $key;
 
-    /*
-     *  查询订单
-     * 文档 https://pay.weixin.qq.com/wiki/doc/api/jsapi_sl.php?chapter=9_2
-     * */
     private function __construct()
     {
         $initdata = require('../wx/conf/config.php');
         $this->appid = $initdata["wechat"]["appid"];
         $this->mch_id = $initdata["wechat"]["mch_id"];
         $this->sub_mch_id = $initdata["wechat"]["sub_mch_id"];
-//        $this->sign = $initdata["wechat"]["sign"];
         $this->key = $initdata["wechat"]["key"];
     }
 
@@ -42,21 +35,25 @@ class WechatOrderQuery
         return self::$_instance;
     }
 
-    public function OrderQuery($transaction_id)
-    {
+    /**
+     *关闭订单 https://api.mch.weixin.qq.com/pay/closeorder
+     *文档 https://pay.weixin.qq.com/wiki/doc/api/jsapi_sl.php?chapter=9_3
+     */
 
+    public function CloseOrder($out_trade_no)
+    {
         $Obj = [
             "appid" => $this->appid,
             "mch_id" => $this->mch_id,
             "sub_mch_id" => $this->sub_mch_id,
-            "transaction_id" => $transaction_id,//微信订单号
+            "out_trade_no" => $out_trade_no,//微信订单号
             "nonce_str" => Random::alnum(32),//随机字符串
         ];
         $Obj["sign"] = $this->makeSign($Obj); //签名
 
         $result = XMLUtils::xml_to_array(
             Http::post(
-                'https://api.mch.weixin.qq.com/pay/orderquery',
+                'https://api.mch.weixin.qq.com/pay/closeorder',
                 XMLUtils::array_to_xml($Obj)
             )
         );
@@ -64,13 +61,16 @@ class WechatOrderQuery
         if ($result['return_code'] == 'FAIL') {
             throw new HttpException('communicate_failed', $result['return_msg']);
         }
-        if ($result['return_code'] == 'SUCCESS' && $result['return_msg'] == 'SUCCESS' && $result['trade_state'] == 'SUCCESS') {
-            $r = ["msg" => "交易成功", "data" => $result];
+
+        if ($result['result_code'] == 'SUCCESS') {
+            $r = ["msg" => "关闭订单成功", "data" => $result];
             return json_encode($r);
-        } else {
-            $r = ["msg" => "交易失败", "data" => $result];
-            return json_encode($r);
+        } elseif ($result['result_code'] == 'FAIL') {
+            $r = ["msg" => "关闭订单失败", "data" => $result];
+//            return json_encode([$result['err_code'], $result['err_code_des']]);
+            return $r;
         }
+
     }
 
     public function makeSign($arr)
@@ -83,4 +83,5 @@ class WechatOrderQuery
         $temp = md5($string_a); // md5加密
         return strtoupper($temp); // 将结果转为纯大写
     }
+
 }

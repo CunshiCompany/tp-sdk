@@ -9,6 +9,7 @@ use Cunshi\TpSdk\Env;
 use Cunshi\TpSdk\tools\AES;
 use Cunshi\TpSdk\tools\Http;
 use Cunshi\TpSdk\tools\Random;
+use Cunshi\TpSdk\tools\Sign;
 use Cunshi\TpSdk\系统退款单号;
 use Cunshi\TpSdk\订单单号;
 use Cunshi\TpSdk\订单总金额;

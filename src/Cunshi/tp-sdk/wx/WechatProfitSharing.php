@@ -6,6 +6,7 @@ namespace Cunshi\TpSdk\wx;
 use Cunshi\TpSdk\App;
 use Cunshi\TpSdk\tools\Http;
 use Cunshi\TpSdk\tools\Random;
+use Cunshi\TpSdk\tools\Sign;
 use http\Env;
 use HttpException;
 use function Cunshi\TpSdk\xml_to_array;

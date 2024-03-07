@@ -5,7 +5,7 @@ namespace Cunshi\TpSdk\wx;
 
 use Cunshi\TpSdk\tools\Http;
 use Cunshi\TpSdk\tools\Random;
-use http\Env;
+use Cunshi\TpSdk\tools\Sign;
 use HttpException;
 
 

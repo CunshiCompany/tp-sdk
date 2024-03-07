@@ -1,9 +1,8 @@
 <?php
 
-namespace Cunshi\TpSdk\wx;
+namespace Cunshi\TpSdk\tools;
 
 
-use http\Env;
 use function Cunshi\TpSdk\format_params;
 
 class Sign
@@ -23,7 +22,6 @@ class Sign
         } elseif ($sign_type == 'HMAC-SHA256') {
             $sign_str = hash_hmac('sha256', format_params($params, false) . '&key=' . $mch_key, $mch_key);
         }
-
         return strtoupper($sign_str);
     }
 }
