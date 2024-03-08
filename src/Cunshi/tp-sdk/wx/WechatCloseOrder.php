@@ -83,5 +83,4 @@ class WechatCloseOrder
         $temp = md5($string_a); // md5加密
         return strtoupper($temp); // 将结果转为纯大写
     }
-
 }

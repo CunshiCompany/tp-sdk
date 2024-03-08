@@ -269,7 +269,6 @@ class WechatRefund
                 ];
             }
         }
-
         return [];
     }
 
@@ -335,7 +334,7 @@ class WechatRefund
      * @param string $key
      * @return string|null
      *
-     * @throws \EasyWeChat\Kernel\Exceptions\Exception
+     * @throws
      */
     public function decryptMessage(string $message)
     {

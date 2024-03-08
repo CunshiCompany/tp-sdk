@@ -82,6 +82,10 @@ class WechatPay
         return $params;
     }
 
+    /*
+     * https://api.mch.weixin.qq.com/pay/unifiedorder
+     * 统一下单
+     * */
 
     private function _unifiedOrder($openid, $out_trade_no, $total_fee, $ip)
     {

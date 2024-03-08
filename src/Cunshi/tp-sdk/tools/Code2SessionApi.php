@@ -1,9 +1,6 @@
 <?php
 
-namespace Cunshi\TpSdk\wx;
-
-
-use Cunshi\TpSdk\tools\Http;
+namespace Cunshi\TpSdk\tools;
 
 
 class Code2SessionApi
