@@ -10,6 +10,8 @@ return [
         "sub_appid" => "",//子商户公众账号ID
         "sub_mch_id" => "",//子商户号
         "notify_url" => "",//通知地址
-        "sign_type"=>"MD5",//签名方式
+        "sign_type" => "MD5",//签名方式
+        "mch_cert_path" => "",//证书路径
+        "mch_key_path" => "",//证书 key 路径
     ]
 ];

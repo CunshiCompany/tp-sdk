@@ -10,6 +10,7 @@ use Cunshi\TpSdk\tools\AES;
 use Cunshi\TpSdk\tools\Http;
 use Cunshi\TpSdk\tools\Random;
 use Cunshi\TpSdk\tools\Sign;
+use Cunshi\TpSdk\tools\XMLUtils;
 use Cunshi\TpSdk\系统退款单号;
 use Cunshi\TpSdk\订单单号;
 use Cunshi\TpSdk\订单总金额;
@@ -149,22 +150,23 @@ class WechatRefund
      */
     public static $ORDER_NOT_READY = 'ORDER_NOT_READY';
 
-    private $_appId;      // 小程序 appid
-    private $_mchId;      // 服务商商户号
-    private $_subMchId;   // 子商户号
-    private $_notifyUrl;  // 退款成功回调地址
-    private $_mchKey;     // 商户号密钥
+    private $appId;      // 小程序 appid
+    private $mchId;      // 服务商商户号
+    private $subMchId;   // 子商户号
+    private $notifyUrl;  // 退款成功回调地址
+    private $key;     // 商户号密钥
 
-    private $_mchCertPath;   // 证书路径
-    private $_mchKeyPath;    // 证书 key 路径
+    private $mchCertPath;   // 证书路径
+    private $mchKeyPath;    // 证书 key 路径
 
     public function __construct()
     {
-        $this->_appId = Env::get('wechat.appid');
-        $this->_mchId = Env::get('wechat.mch_id');
-        $this->_mchKey = Env::get('wechat.mch_key');
-        $this->_mchCertPath = App::getRootPath() . Env::get('wechat.mch_cert_path');
-        $this->_mchKeyPath = App::getRootPath() . Env::get('wechat.mch_key_path');
+        $initdata = require('../wx/conf/config.php');
+        $this->appId = $initdata["wechat"]["appid"];
+        $this->mchId = $initdata["wechat"]["mch_id"];
+        $this->key = $initdata["wechat"]["key"];
+        $this->mchCertPath = $initdata["wechat"]["mch_cert_path"];
+        $this->mchKeyPath = $initdata["wechat"]["keymch_key_path"];
     }
 
     public static function getInstance()
@@ -174,18 +176,6 @@ class WechatRefund
         }
 
         return self::$_instance;
-    }
-
-    public function setSubMchId($mch_id)
-    {
-        $this->_subMchId = $mch_id;
-        return $this;
-    }
-
-    public function setNotifyUrl($url)
-    {
-        $this->_notifyUrl = $url;
-        return $this;
     }
 
     /**
@@ -201,26 +191,26 @@ class WechatRefund
     public function refundOrder($out_trade_no, $out_refund_no, $total_fee, $refund_fee, $refund_desc)
     {
         $params = [
-            'appid' => $this->_appId,
-            'mch_id' => $this->_mchId,
-            'sub_mch_id' => $this->_subMchId,
+            'appid' => $this->appId,
+            'mch_id' => $this->mchId,
+            'sub_mch_id' => $this->subMchId,
             'nonce_str' => Random::alnum(32),
             'out_trade_no' => $out_trade_no,       // 商户系统内部订单号
             'out_refund_no' => $out_refund_no,      // 商户系统内部退款单号
             'total_fee' => $total_fee,          // 订单总金额，单位为分
             'refund_fee' => $refund_fee,         // 退款总金额，单位为分
             'refund_desc' => $refund_desc,        // 退款原因
-            'notify_url' => $this->_notifyUrl,   // 通知地址
+            'notify_url' => $this->notifyUrl,   // 通知地址
         ];
 
         $params['sign'] = Sign::getSign($params);
-        $result = xml_to_array(
+        $result = XMLUtils::xml_to_array(
             Http::post(
                 'https://api.mch.weixin.qq.com/secapi/pay/refund',
-                array_to_xml($params),
+                XMLUtils::array_to_xml($params),
                 [
-                    CURLOPT_SSLKEY => $this->_mchKeyPath,
-                    CURLOPT_SSLCERT => $this->_mchCertPath,
+                    CURLOPT_SSLKEY => $this->mchKeyPath,
+                    CURLOPT_SSLCERT => $this->mchCertPath,
                 ]
             )
         );
@@ -232,7 +222,7 @@ class WechatRefund
     {
         if (!$result) {
             return [
-                'status' => Config::get('common.refund_confirm.status.failed'),
+//                'status' => Config::get('common.refund_confirm.status.failed'),
                 'fail_code' => self::$ERROR,
                 'fail_msg' => '微信退款请求失败'
             ];
@@ -240,7 +230,7 @@ class WechatRefund
 
         if ($result['return_code'] == 'FAIL') {
             return [
-                'status' => Config::get('common.refund_confirm.status.failed'),
+//                'status' => Config::get('common.refund_confirm.status.failed'),
                 'fail_code' => $result['return_code'],
                 'fail_msg' => $result['return_msg']
             ];
@@ -249,7 +239,7 @@ class WechatRefund
         if ($result['result_code'] == 'FAIL') {
             if ($result['err_code'] == self::$NOTENOUGH) {
                 return [
-                    'status' => Config::get('common.refund_confirm.status.failed'),
+//                    'status' => Config::get('common.refund_confirm.status.failed'),
                     'fail_code' => $result['err_code'],
                     'fail_msg' => '余额不足，将尽快处理'
                 ];
@@ -267,13 +257,13 @@ class WechatRefund
                 self::$INVALID_REQUEST
             ])) {
                 return [
-                    'status' => Config::get('common.refund_confirm.status.closed'),
+//                    'status' => Config::get('common.refund_confirm.status.closed'),
                     'fail_code' => $result['err_code'],
                     'fail_msg' => $result['err_code_des']
                 ];
             } else {
                 return [
-                    'status' => Config::get('common.refund_confirm.status.failed'),
+//                    'status' => Config::get('common.refund_confirm.status.failed'),
                     'fail_code' => $result['err_code'],
                     'fail_msg' => $result['err_code_des']
                 ];
@@ -291,21 +281,21 @@ class WechatRefund
     public function queryRefundOrder($out_refund_no)
     {
         $params = [
-            'appid' => $this->_appId,
-            'mch_id' => $this->_mchId,
-            'sub_mch_id' => $this->_subMchId,
+            'appid' => $this->appId,
+            'mch_id' => $this->mchId,
+            'sub_mch_id' => $this->subMchId,
             'nonce_str' => Random::alnum(32),
             'out_refund_no' => $out_refund_no,      // 商户系统内部退款单号
         ];
 
         $params['sign'] = Sign::getSign($params);
-        $result = xml_to_array(
+        $result = XMLUtils::xml_to_array(
             Http::post(
                 'https://api.mch.weixin.qq.com/pay/refundquery',
-                array_to_xml($params)
+                XMLUtils::array_to_xml($params)
             )
         );
-        file_put_contents(App::getRuntimePath() . 'refund.log', '【' . date("Y-m-d H:i:s") . '】' . json_encode($result) . PHP_EOL, FILE_APPEND | LOCK_EX);
+//        file_put_contents(App::getRuntimePath() . 'refund.log', '【' . date("Y - m - d H:i:s") . '】' . json_encode($result) . PHP_EOL, FILE_APPEND | LOCK_EX);
         if ($this->checkNotifySign($result)) {
             if ($result['return_code'] == 'FAIL') {
                 $res = ['status' => false, 'msg' => $result['return_msg']];
@@ -333,7 +323,7 @@ class WechatRefund
         } else {
             $res = [
                 'status' => false,
-                'msg' => config('error.not_found_order')
+//                'msg' => config('error.not_found_order')
             ];
         }
         return $res;
@@ -351,7 +341,7 @@ class WechatRefund
     {
         if (!$message) return null;
 
-        return AES::decrypt(base64_decode($message, true), md5($this->_mchKey), '', OPENSSL_RAW_DATA, 'AES-256-ECB');
+        return AES::decrypt(base64_decode($message, true), md5($this->key), '', OPENSSL_RAW_DATA, 'AES-256-ECB');
     }
 
     /**
