@@ -8,6 +8,7 @@ use Cunshi\TpSdk\tools\Http;
 use Cunshi\TpSdk\tools\Random;
 use Cunshi\TpSdk\tools\Sign;
 use Cunshi\TpSdk\tools\XMLUtils;
+use DateTime;
 use http\Env;
 use HttpException;
 use function Cunshi\TpSdk\xml_to_array;
@@ -17,6 +18,10 @@ class WechatProfitSharing
 {
     private $_appId;
     private $_mchId;
+    private $_mchCertPath;
+    private $_mchKeyPath;
+
+    private $profitn_notify_url;
 
     public function __construct()
     {
@@ -26,6 +31,7 @@ class WechatProfitSharing
         $this->_mchId = $initdata['wechat']['mch_id'];
         $this->_mchCertPath = $initdata['wechat']['mch_cert_path'];
         $this->_mchKeyPath = $initdata['wechat']['mch_key_path'];
+        $this->profitn_notify_url = $initdata['wechat']['$profitn_notify_url'];
     }
 
     /**
@@ -328,5 +334,56 @@ class WechatProfitSharing
             throw new HttpException('communicate_failed', $result['return_msg']);
         }
         return $result;
+    }
+
+    /**
+     * 回退结果查询
+     * https://api.mch.weixin.qq.com/pay/profitsharingreturnquery
+     * @return void
+     */
+    public function profitSharingReturnQuery($merchant_id, $out_order_no, $out_return_no)
+    {
+        $params = [
+            'mch_id' => $this->_mchId,
+            'sub_mch_id' => $merchant_id,
+            'appid' => $this->_appId,
+            'nonce_str' => Random::alnum(32),
+            'out_order_no' => $out_order_no,
+            'out_return_no' => $out_return_no,
+        ];
+
+        $params['sign'] = Sign::getSign($params, 'HMAC-SHA256');
+        $result = XMLUtils::xml_to_array(
+            Http::post(
+                'https://api.mch.weixin.qq.com/secapi/pay/profitsharingreturn',
+                XMLUtils::array_to_xml($params))
+        );
+        if ($result['return_code'] == 'FAIL') {
+            throw new HttpException('communicate_failed', $result['return_msg']);
+        }
+        return $result;
+    }
+
+    /*
+     * 分账动账通知
+     *https://pay.weixin.qq.com/wiki/doc/api/allocation_sl.php?chapter=25_9&index=11
+     */
+    public function profitNotify($id)
+    {
+        $params = [
+            "id" => $id,
+            "create_time" => new DateTime('2018-06-08T10:34:56+08:00'),
+            "event_type" => "",
+            "summary" => "",
+            "resource_type" => "",
+            "resource" => [
+                "algorithm" => "",
+                "original_type" => "",
+                "ciphertext" => "",
+                "nonce" => Random::alnum(32)
+            ]
+        ];
+        // todotodo
+
     }
 }
