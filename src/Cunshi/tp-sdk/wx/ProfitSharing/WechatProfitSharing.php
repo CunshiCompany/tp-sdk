@@ -255,4 +255,40 @@ class WechatProfitSharing
         }
         return $result;
     }
+
+    /**
+     * 完结分账
+     * https://api.mch.weixin.qq.com/secapi/pay/profitsharingfinish
+     * @return void
+     *
+     */
+    public function profitsharingFinish($merchant_id, $transaction_id, $out_order_no)
+    {
+        $params = [
+            'mch_id' => $this->_mchId,
+            'sub_mch_id' => $merchant_id,
+            'appid' => $this->_appId,
+            'nonce_str' => Random::alnum(32),
+            'transaction_id' => $transaction_id,
+            'out_order_no' => $out_order_no,
+
+        ];
+
+        $params['sign'] = Sign::getSign($params, 'HMAC-SHA256');
+        $result = XMLUtils::xml_to_array(
+            Http::post(
+                'https://api.mch.weixin.qq.com/secapi/pay/profitsharingfinish',
+                XMLUtils::array_to_xml($params),
+                [
+                    CURLOPT_SSLKEY => $this->_mchKeyPath,
+                    CURLOPT_SSLCERT => $this->_mchCertPath,
+                ]
+            )
+        );
+
+        if ($result['return_code'] == 'FAIL') {
+            throw new HttpException('communicate_failed', $result['return_msg']);
+        }
+        return $result;
+    }
 }
