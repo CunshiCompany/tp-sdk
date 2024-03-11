@@ -262,7 +262,41 @@ class WechatProfitSharing
      * @return void
      *
      */
-    public function profitsharingFinish($merchant_id, $transaction_id, $out_order_no, $out_return_no, $return_amount, $description)
+    public function profitsharingFinish($merchant_id, $transaction_id, $out_order_no, $description)
+    {
+        $params = [
+            'mch_id' => $this->_mchId,
+            'sub_mch_id' => $merchant_id,
+            'appid' => $this->_appId,
+            'nonce_str' => Random::alnum(32),
+            'transaction_id' => $transaction_id,
+            'out_order_no' => $out_order_no,
+            'description' => $description
+        ];
+
+        $params['sign'] = Sign::getSign($params, 'HMAC-SHA256');
+        $result = XMLUtils::xml_to_array(
+            Http::post(
+                'https://api.mch.weixin.qq.com/secapi/pay/profitsharingfinish',
+                XMLUtils::array_to_xml($params),
+                [
+                    CURLOPT_SSLKEY => $this->_mchKeyPath,
+                    CURLOPT_SSLCERT => $this->_mchCertPath,
+                ]
+            )
+        );
+
+        if ($result['return_code'] == 'FAIL') {
+            throw new HttpException('communicate_failed', $result['return_msg']);
+        }
+        return $result;
+    }
+
+    /*
+     * 分账回退
+     *https://pay.weixin.qq.com/wiki/doc/api/allocation_sl.php?chapter=25_7&index=9
+     */
+    public function profitSharingReturn($merchant_id, $transaction_id, $out_order_no, $out_return_no, $return_amount, $description)
     {
         $params = [
             'mch_id' => $this->_mchId,
@@ -294,22 +328,5 @@ class WechatProfitSharing
             throw new HttpException('communicate_failed', $result['return_msg']);
         }
         return $result;
-    }
-
-    /*
-     * 分账回退
-     *https://pay.weixin.qq.com/wiki/doc/api/allocation_sl.php?chapter=25_7&index=9
-     */
-    public function profitSharingReturn($merchant_id, $transaction_id, $out_order_no)
-    {
-        $params = [
-            'mch_id' => $this->_mchId,
-            'sub_mch_id' => $merchant_id,
-            'appid' => $this->_appId,
-            'nonce_str' => Random::alnum(32),
-            'transaction_id' => $transaction_id,
-            'out_order_no' => $out_order_no,
-        ];
-
     }
 }
