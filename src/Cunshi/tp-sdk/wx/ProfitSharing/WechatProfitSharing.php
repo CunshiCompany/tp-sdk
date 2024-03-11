@@ -119,8 +119,8 @@ class WechatProfitSharing
     }
 
     /**
-     * 获取待分账金额
-     *
+     * 查询订单待分账金额
+     * https://pay.weixin.qq.com/wiki/doc/api/allocation_sl.php?chapter=25_10&index=7
      * @return array
      */
     public function orderAmount($transaction_id)
@@ -228,7 +228,7 @@ class WechatProfitSharing
 
     /**
      * 查询分账结果
-     * 文档 https://api.mch.weixin.qq.com/pay/profitsharingquery
+     * 文档 https://pay.weixin.qq.com/wiki/doc/api/allocation_sl.php?chapter=25_2&index=3
      * @return void
      */
     public function querySharingResult($merchant_id, $transaction_id, $out_order_no)
@@ -258,7 +258,7 @@ class WechatProfitSharing
 
     /**
      * 完结分账
-     * https://api.mch.weixin.qq.com/secapi/pay/profitsharingfinish
+     * https://pay.weixin.qq.com/wiki/doc/api/allocation_sl.php?chapter=25_5&index=6
      * @return void
      *
      */
