@@ -19,10 +19,7 @@ class WechatOrderQuery
 //    private $sign;
     private $key;
 
-    /*
-     *  查询订单
-     * 文档 https://pay.weixin.qq.com/wiki/doc/api/jsapi_sl.php?chapter=9_2
-     * */
+
     private function __construct()
     {
         $initdata = require('../wx/conf/config.php');
@@ -42,6 +39,10 @@ class WechatOrderQuery
         return self::$_instance;
     }
 
+    /*
+  *  查询订单
+  * 文档 https://pay.weixin.qq.com/wiki/doc/api/jsapi_sl.php?chapter=9_2
+  * */
     public function OrderQuery($transaction_id)
     {
 
