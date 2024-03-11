@@ -7,6 +7,16 @@ use HttpException;
 
 class WechatPayResultNotify
 {
+    private static $_instance = null;
+
+    public static function getInstance()
+    {
+        if (is_null(self::$_instance)) {
+            self::$_instance = new self();
+        }
+        return self::$_instance;
+    }
+
     /**
      * https://pay.weixin.qq.com/wiki/doc/api/jsapi_sl.php?chapter=9_7
      * 支付结果通用通知

@@ -13,5 +13,6 @@ return [
         "sign_type" => "MD5",//签名方式
         "mch_cert_path" => "",//证书路径
         "mch_key_path" => "",//证书 key 路径
+        "interface_url"=>"https://api.mch.weixin.qq.com/pay/unifiedorder",//接口url
     ]
 ];

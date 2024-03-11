@@ -74,7 +74,7 @@ class WechatOrderQuery
         }
     }
 
-    public function makeSign($arr)
+    private function makeSign($arr)
     {
         $arr = array_filter($arr); // 数组去空值
         ksort($arr); // 按键字典序排序
