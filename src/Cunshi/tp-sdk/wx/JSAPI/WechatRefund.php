@@ -1,6 +1,6 @@
 <?php
 
-namespace Cunshi\TpSdk\wx;
+namespace Cunshi\TpSdk\wx\JSAPI;
 
 
 use Cunshi\TpSdk\App;
@@ -161,7 +161,7 @@ class WechatRefund
 
     public function __construct()
     {
-        $initdata = require('../wx/conf/config.php');
+        $initdata = require('../conf/config.php');
         $this->appId = $initdata["wechat"]["appid"];
         $this->mchId = $initdata["wechat"]["mch_id"];
         $this->key = $initdata["wechat"]["key"];

@@ -1,6 +1,6 @@
 <?php
 
-namespace Cunshi\TpSdk\wx;
+namespace Cunshi\TpSdk\wx\JSAPI;
 
 use Cunshi\TpSdk\tools\XMLUtils;
 use HttpException;
@@ -12,7 +12,7 @@ class WechatRefundNotify
 
     public function __construct()
     {
-        $initdata = require('../wx/conf/config.php');
+        $initdata = require('../conf/config.php');
         $this->key = $initdata["wechat"]["key"];
         $this->key = md5($this->key); //加密
     }
@@ -38,5 +38,8 @@ class WechatRefundNotify
         $base64temp = base64_decode($result["req_info"]);
         $decode = openssl_decrypt($base64temp, 'AES-256-ECB', $this->key, OPENSSL_RAW_DATA);
         return XMLUtils::xml_to_array($decode);
+
+        //todo 返回参数
+        //商户处理退款通知参数后同步返回给微信参数：
     }
 }

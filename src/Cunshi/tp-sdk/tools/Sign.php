@@ -7,9 +7,10 @@ use function Cunshi\TpSdk\format_params;
 
 class Sign
 {
+    // todo 添加format_params方法
     public static function getSign($params, $sign_type = 'MD5')
     {
-        $initdata = require('../wx/conf/config.php');
+        $initdata = require('../conf/config.php');
         if (!$params) return '';
 
         $mch_key = $initdata["wechat"]["secret"];

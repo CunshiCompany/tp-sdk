@@ -1,6 +1,6 @@
 <?php
 
-namespace Cunshi\TpSdk\wx;
+namespace Cunshi\TpSdk\wx\JSAPI;
 
 use Cunshi\TpSdk\tools\XMLUtils;
 use HttpException;

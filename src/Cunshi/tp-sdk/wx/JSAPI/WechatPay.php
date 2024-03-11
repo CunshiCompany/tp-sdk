@@ -1,6 +1,6 @@
 <?php
 
-namespace Cunshi\TpSdk\wx;
+namespace Cunshi\TpSdk\wx\JSAPI;
 
 
 use Cunshi\TpSdk\tools\Http;
@@ -23,7 +23,7 @@ class WechatPay
     public function __construct()
     {
 
-        $initdata = require('../wx/conf/config.php');
+        $initdata = require('../conf/config.php');
         $this->_appId = $initdata["wechat"]["appid"];
         $this->_mchId = $initdata["wechat"]["mch_id"];
         $this->_subMchId=$initdata["wechat"]["sub_mch_id"];

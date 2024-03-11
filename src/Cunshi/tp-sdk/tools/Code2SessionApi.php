@@ -6,6 +6,9 @@ namespace Cunshi\TpSdk\tools;
 class Code2SessionApi
 {
     private $_code;
+    private $_appId;
+
+    private $_secret;
 
     public function __construct($data)
     {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Cunshi\TpSdk\wx;
+namespace Cunshi\TpSdk\wx\JSAPI;
 
 use Cunshi\TpSdk\tools\Http;
 use Cunshi\TpSdk\tools\Random;
@@ -18,7 +18,7 @@ class WechatPayTilReport
 
     public function __construct()
     {
-        $initdata = require('../wx/conf/config.php');
+        $initdata = require('../conf/config.php');
         $this->appid = $initdata["wechat"]["appid"];
         $this->mch_id = $initdata["wechat"]["mch_id"];
         $this->sub_mch_id = $initdata["wechat"]["sub_mch_id"];
