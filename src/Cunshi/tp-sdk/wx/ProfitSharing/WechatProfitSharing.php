@@ -90,8 +90,8 @@ class WechatProfitSharing
     }
 
     /**
-     * 获取最大分账比例
-     *
+     * 查询最大分账比例API
+     * https://pay.weixin.qq.com/wiki/doc/api/allocation_sl.php?chapter=25_11&index=8
      * @return array
      */
     public function maxRatio($merchant_id)
@@ -262,7 +262,7 @@ class WechatProfitSharing
      * @return void
      *
      */
-    public function profitsharingFinish($merchant_id, $transaction_id, $out_order_no)
+    public function profitsharingFinish($merchant_id, $transaction_id, $out_order_no, $out_return_no, $return_amount, $description)
     {
         $params = [
             'mch_id' => $this->_mchId,
@@ -271,13 +271,17 @@ class WechatProfitSharing
             'nonce_str' => Random::alnum(32),
             'transaction_id' => $transaction_id,
             'out_order_no' => $out_order_no,
-
+            'out_return_no' => $out_return_no,
+            'return_account_type' => $merchant_id,
+            'return_account' => $merchant_id,
+            'return_amount' => $return_amount,
+            'description' => $description
         ];
 
         $params['sign'] = Sign::getSign($params, 'HMAC-SHA256');
         $result = XMLUtils::xml_to_array(
             Http::post(
-                'https://api.mch.weixin.qq.com/secapi/pay/profitsharingfinish',
+                'https://api.mch.weixin.qq.com/secapi/pay/profitsharingreturn',
                 XMLUtils::array_to_xml($params),
                 [
                     CURLOPT_SSLKEY => $this->_mchKeyPath,
@@ -290,5 +294,22 @@ class WechatProfitSharing
             throw new HttpException('communicate_failed', $result['return_msg']);
         }
         return $result;
+    }
+
+    /*
+     * 分账回退
+     *https://pay.weixin.qq.com/wiki/doc/api/allocation_sl.php?chapter=25_7&index=9
+     */
+    public function profitSharingReturn($merchant_id, $transaction_id, $out_order_no)
+    {
+        $params = [
+            'mch_id' => $this->_mchId,
+            'sub_mch_id' => $merchant_id,
+            'appid' => $this->_appId,
+            'nonce_str' => Random::alnum(32),
+            'transaction_id' => $transaction_id,
+            'out_order_no' => $out_order_no,
+        ];
+
     }
 }
