@@ -13,12 +13,17 @@ class WechatPayTilReport
     private $mch_id;
     private $sub_mch_id;
     private $interface_url;
-    private $execute_time_;
     private $key;
     private static $_instance = null;
 
     public function __construct()
     {
+        $initdata = require('../wx/conf/config.php');
+        $this->appid = $initdata["wechat"]["appid"];
+        $this->mch_id = $initdata["wechat"]["mch_id"];
+        $this->sub_mch_id = $initdata["wechat"]["sub_mch_id"];
+        $this->interface_url = $initdata["wechat"]["interface_url"];
+        $this->key = $initdata["wechat"]["key"];
     }
 
     public static function getInstance()

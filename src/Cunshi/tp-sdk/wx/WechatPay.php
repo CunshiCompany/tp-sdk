@@ -26,6 +26,9 @@ class WechatPay
         $initdata = require('../wx/conf/config.php');
         $this->_appId = $initdata["wechat"]["appid"];
         $this->_mchId = $initdata["wechat"]["mch_id"];
+        $this->_subMchId=$initdata["wechat"]["sub_mch_id"];
+        $this->_notifyUrl=$initdata["wechat"]["notify_url"];
+
     }
 
     public static function getInstance()
