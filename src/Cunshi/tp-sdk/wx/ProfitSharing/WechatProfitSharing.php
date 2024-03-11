@@ -29,8 +29,8 @@ class WechatProfitSharing
     }
 
     /**
+     * https://api.mch.weixin.qq.com/pay/profitsharingaddreceiver
      * 添加分账接收方
-     *
      * @return array
      */
     public function addReceiver($merchant_id, $receiver)
@@ -48,6 +48,36 @@ class WechatProfitSharing
         $result = XMLUtils::xml_to_array(
             Http::post(
                 'https://api.mch.weixin.qq.com/pay/profitsharingaddreceiver',
+                XMLUtils::array_to_xml($params)
+            )
+        );
+
+        if ($result['return_code'] == 'FAIL') {
+            throw new HttpException('communicate_failed', $result['return_msg']);
+        }
+
+        return $result;
+    }
+
+    /**
+     * 删除分账接收方
+     * https://api.mch.weixin.qq.com/pay/profitsharingremovereceiver
+     * @return void
+     */
+    public function deleteReceiver($merchant_id, $receiver)
+    {
+        $params = [
+            'appid' => $this->_appId,
+            'mch_id' => $this->_mchId,
+            'sub_mch_id' => $merchant_id,
+            'nonce_str' => Random::alnum(32),
+            'receiver' => json_encode($receiver, JSON_UNESCAPED_UNICODE)
+        ];
+
+        $params['sign'] = Sign::getSign($params, 'HMAC-SHA256');
+        $result = XMLUtils::xml_to_array(
+            Http::post(
+                'https://api.mch.weixin.qq.com/pay/profitsharingremovereceiver',
                 XMLUtils::array_to_xml($params)
             )
         );
@@ -117,7 +147,7 @@ class WechatProfitSharing
     }
 
     /**
-     * 单次分账
+     * 请求单次分账
      * 文档https://pay.weixin.qq.com/wiki/doc/api/allocation_sl.php?chapter=25_1&index=1
      * @return array
      */
@@ -161,7 +191,6 @@ class WechatProfitSharing
      */
     public function requestMultipleSharing($merchant_id, $transaction_id, $out_order_no, $receivers)
     {
-        // todo 完善params
         $params = [
             "mch_id" => $this->_mchId,
             "sub_mch_id" => $merchant_id,
@@ -172,7 +201,7 @@ class WechatProfitSharing
             "receivers" => json_encode(
                 $receivers,
                 JSON_UNESCAPED_UNICODE
-            ), //装receiver的数组
+            ),
         ];
 
         $params['sign'] = Sign::getSign($params, 'HMAC-SHA256');
@@ -194,6 +223,36 @@ class WechatProfitSharing
         // todo 可能需要解析receivers
 //  $result['return_code'] == 'SUCCESS' && $result['result_code'] == 'SUCCESS'都成功返回
 
+        return $result;
+    }
+
+    /**
+     * 查询分账结果
+     * 文档 https://api.mch.weixin.qq.com/pay/profitsharingquery
+     * @return void
+     */
+    public function querySharingResult($merchant_id, $transaction_id, $out_order_no)
+    {
+        $params = [
+            "mch_id" => $this->_mchId,
+            "sub_mch_id" => $merchant_id,
+            "nonce_str" => Random::alnum(32),
+            "transaction_id" => $transaction_id,
+            "out_order_no" => $out_order_no,
+        ];
+
+        $params["sign"] = Sign::getSign($params, 'HMAC-SHA256');
+
+        $result = XMLUtils::xml_to_array(
+            Http::post(
+                'https://api.mch.weixin.qq.com/pay/profitsharingquery',
+                XMLUtils::array_to_xml($params)
+            )
+        );
+
+        if ($result['return_code'] == 'FAIL') {
+            throw new HttpException('communicate_failed', $result['return_msg']);
+        }
         return $result;
     }
 }
