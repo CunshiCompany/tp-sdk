@@ -380,7 +380,7 @@ class WechatProfitSharing
                 "nonce" => Random::alnum(32)
             ]
         ];
-        // todotodo
+        // todo 完善
 
     }
 }
