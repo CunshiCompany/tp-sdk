@@ -34,6 +34,10 @@ class WechatPayTilReport
         return self::$_instance;
     }
 
+    /*
+     * 交易保障
+     * https://pay.weixin.qq.com/wiki/doc/api/jsapi_sl.php?chapter=9_8
+     * */
     public function PayTilReport($execute_time_, $return_msg, $result_code)
     {
         $params = [
