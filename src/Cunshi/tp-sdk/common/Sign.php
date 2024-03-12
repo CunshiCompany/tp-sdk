@@ -1,6 +1,6 @@
 <?php
 
-namespace extend\wechat;
+namespace Cunshi\TpSdk\common;
 
 
 use extend\Func;
