@@ -80,7 +80,7 @@ class WechatPay
         return $params;
     }
 
-    private function _unifiedOrder($openid, $out_trade_no, $total_fee, $ip)
+    public function _unifiedOrder($openid, $out_trade_no, $total_fee, $ip)
     {
         $params = [
             'appid' => $this->_appId,
