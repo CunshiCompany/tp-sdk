@@ -2,6 +2,7 @@
 
 namespace extend\wechat;
 
+use Cunshi\TpSdk\common\Sign;
 use extend\Func;
 use extend\Http;
 use extend\Random;

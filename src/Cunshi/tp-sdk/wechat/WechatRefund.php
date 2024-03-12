@@ -2,11 +2,12 @@
 
 namespace extend\wechat;
 
+use Cunshi\TpSdk\common\Sign;
 use extend\Http;
 use extend\Random;
 use think\facade\App;
-use think\facade\Env;
 use think\facade\Config;
+use think\facade\Env;
 
 class WechatRefund
 {
