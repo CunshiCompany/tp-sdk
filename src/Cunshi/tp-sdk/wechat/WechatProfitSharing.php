@@ -1,11 +1,13 @@
 <?php
 
-namespace extend\wechat;
+namespace Cunshi\TpSdk\wechat;
 
+
+use Cunshi\TpSdk\common\Func;
+use Cunshi\TpSdk\common\Http;
+use Cunshi\TpSdk\common\Random;
 use Cunshi\TpSdk\common\Sign;
-use extend\Func;
-use extend\Http;
-use extend\Random;
+use Cunshi\TpSdk\exception\WechatException;
 use HttpException;
 
 class WechatProfitSharing
@@ -18,12 +20,12 @@ class WechatProfitSharing
     private $_mchKeyPath;
 
 
-    public function __construct($_appId, $_mchId, $_mchCertPath, $_mchKeyPath)
+    public function __construct($app_id, $mch_id, $mch_certPath, $mch_keyPath)
     {
-        $this->_appId = $_appId;
-        $this->_mchId = $_mchId;
-        $this->_mchCertPath = $_mchCertPath;
-        $this->_mchKeyPath = $_mchKeyPath;
+        $this->_appId = $app_id;
+        $this->_mchId = $mch_id;
+        $this->_mchCertPath = $mch_certPath;
+        $this->_mchKeyPath = $mch_keyPath;
     }
 
     /**
@@ -147,7 +149,7 @@ class WechatProfitSharing
         );
 
         if ($result['return_code'] == 'FAIL') {
-            throw new HttpException('communicate_failed', $result['return_msg']);
+            throw  new  WechatException('communicate_failed', $result['return_msg']);
         }
 
         return $result;

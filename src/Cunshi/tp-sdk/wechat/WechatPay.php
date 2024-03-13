@@ -1,11 +1,12 @@
 <?php
 
-namespace extend\wechat;
+namespace Cunshi\TpSdk\wechat;
 
+use Cunshi\TpSdk\common\Func;
+use Cunshi\TpSdk\common\Http;
+use Cunshi\TpSdk\common\Random;
 use Cunshi\TpSdk\common\Sign;
-use extend\Func;
-use extend\Http;
-use extend\Random;
+
 use HttpException;
 
 
@@ -20,10 +21,10 @@ class WechatPay
     private $_notifyUrl;            // 支付成功回调地址
     private $_profitSharing = 'N';  // 是否需要分账
 
-    public function __construct($_appId, $_mchId)
+    public function __construct($app_id, $mch_id)
     {
-        $this->_appId = $_appId;
-        $this->_mchId = $_mchId;
+        $this->_appId = $app_id;
+        $this->_mchId = $mch_id;
     }
 
 //    public static function getInstance()
@@ -34,6 +35,7 @@ class WechatPay
 //
 //        return self::$_instance;
 //    }
+
 
     public function setSubMchId($mch_id)
     {

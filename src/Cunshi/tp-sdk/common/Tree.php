@@ -1,6 +1,6 @@
 <?php
 
-namespace extend;
+namespace Cunshi\TpSdk\common;
 
 class Tree
 {

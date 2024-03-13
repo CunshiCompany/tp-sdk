@@ -3,8 +3,6 @@
 namespace Cunshi\TpSdk\common;
 
 
-use extend\Func;
-
 class Sign
 {
     public static function getSign($mch_key, $params, $sign_type = 'MD5')

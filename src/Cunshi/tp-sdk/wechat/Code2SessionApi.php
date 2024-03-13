@@ -1,8 +1,8 @@
 <?php
 
-namespace Cunshi\TpSdk\common;
+namespace Cunshi\TpSdk\wechat;
 
-use extend\Http;
+use Cunshi\TpSdk\common\Http;
 
 class Code2SessionApi
 {
@@ -10,10 +10,10 @@ class Code2SessionApi
     private $_secret;
     private $_code;
 
-    public function __construct($_appId, $_secret, $data)
+    public function __construct($app_Id, $secret, $data)
     {
-        $this->_appId = $_appId;
-        $this->_secret = $_secret;
+        $this->_appId = $app_Id;
+        $this->_secret = $secret;
         $this->_code = $data['code'];
     }
 

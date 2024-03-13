@@ -1,6 +1,6 @@
 <?php
 
-namespace extend\wechat;
+namespace Cunshi\TpSdk\wechat;
 
 class WechatNotifyReturn
 {
@@ -25,4 +25,5 @@ class WechatNotifyReturn
     {
         return "<xml><return_code><![CDATA[FAIL]]></return_code><return_msg><![CDATA[{$msg}]]></return_msg></xml>";
     }
+
 }

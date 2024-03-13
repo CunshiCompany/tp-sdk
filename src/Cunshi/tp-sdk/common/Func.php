@@ -1,6 +1,8 @@
 <?php
 
-namespace extend;
+namespace Cunshi\TpSdk\common;
+
+use DateTime;
 
 class Func
 {
@@ -221,7 +223,7 @@ class Func
         if (strlen($identification_num) == 18) {
             $identification_num_base = substr($identification_num, 0, 17);
 
-            if (verify_identification_num_code($identification_num_base) == strtoupper(substr($identification_num, 17, 1))) {
+            if (self::verify_identification_num_code($identification_num_base) == strtoupper(substr($identification_num, 17, 1))) {
                 return true;
             }
         }
@@ -286,7 +288,7 @@ class Func
         ];
 
         foreach ($formats as $format) {
-            if ($date_time = \DateTime::createFromFormat($format, $str_date)) {
+            if ($date_time = DateTime::createFromFormat($format, $str_date)) {
                 return $date_time->format($str_format);
             }
         }
@@ -307,7 +309,7 @@ class Func
             return false;
         }
 
-        return \DateTime::createFromFormat($str_format, $str_date) ? true : false;
+        return DateTime::createFromFormat($str_format, $str_date) ? true : false;
     }
 
     /**
@@ -371,7 +373,8 @@ class Func
     public static function save_tmp_file($url, $content, $fname = '')
     {
         $base_path = date('Ymd');
-        $tmps_dir = \think\facade\App::getRootPath() . 'public' . DIRECTORY_SEPARATOR . 'tmps' . DIRECTORY_SEPARATOR . $base_path;
+        $rootPath = dirname(dirname(dirname(__DIR__)));// 三级目录向上遍历到项目根目录
+        $tmps_dir = $rootPath . 'public' . DIRECTORY_SEPARATOR . 'tmps' . DIRECTORY_SEPARATOR . $base_path;
 
         self::mkdir_chmod($tmps_dir);
         $fname = $fname ?: basename($url);                                 //返回路径中的文件名部分

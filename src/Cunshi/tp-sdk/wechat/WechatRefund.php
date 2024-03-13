@@ -1,13 +1,12 @@
 <?php
 
-namespace extend\wechat;
+namespace Cunshi\TpSdk\wechat;
 
+use Cunshi\TpSdk\common\AES;
+use Cunshi\TpSdk\common\Func;
+use Cunshi\TpSdk\common\Http;
+use Cunshi\TpSdk\common\Random;
 use Cunshi\TpSdk\common\Sign;
-use extend\Http;
-use extend\Random;
-use think\facade\App;
-use think\facade\Config;
-use think\facade\Env;
 
 class WechatRefund
 {
@@ -139,6 +138,8 @@ class WechatRefund
      */
     public static $ORDER_NOT_READY = 'ORDER_NOT_READY';
 
+    public static $FAIL = 'FAIL';
+
     private $_appId;      // 小程序 appid
     private $_mchId;      // 服务商商户号
     private $_subMchId;   // 子商户号
@@ -195,10 +196,10 @@ class WechatRefund
         ];
 
         $params['sign'] = Sign::getSign($params);
-        $result = xml_to_array(
+        $result = Func::xml_to_array(
             Http::post(
                 'https://api.mch.weixin.qq.com/secapi/pay/refund',
-                array_to_xml($params),
+                Func::array_to_xml($params),
                 [
                     CURLOPT_SSLKEY => $this->_mchKeyPath,
                     CURLOPT_SSLCERT => $this->_mchCertPath,
@@ -213,7 +214,7 @@ class WechatRefund
     {
         if (!$result) {
             return [
-                'status' => Config::get('common.refund_confirm.status.failed'),
+                'status' => self::$FAIL,
                 'fail_code' => self::$ERROR,
                 'fail_msg' => '微信退款请求失败'
             ];
@@ -221,7 +222,7 @@ class WechatRefund
 
         if ($result['return_code'] == 'FAIL') {
             return [
-//                'status' => Config::get('common.refund_confirm.status.failed'),
+                'status' => self::$FAIL,
                 'fail_code' => $result['return_code'],
                 'fail_msg' => $result['return_msg']
             ];
@@ -230,7 +231,7 @@ class WechatRefund
         if ($result['result_code'] == 'FAIL') {
             if ($result['err_code'] == self::$NOTENOUGH) {
                 return [
-//                    'status' => Config::get('common.refund_confirm.status.failed'),
+                    'status' => self::$FAIL,
                     'fail_code' => $result['err_code'],
                     'fail_msg' => '余额不足，将尽快处理'
                 ];
@@ -248,13 +249,13 @@ class WechatRefund
                 self::$INVALID_REQUEST
             ])) {
                 return [
-//                    'status' => Config::get('common.refund_confirm.status.closed'),
+                    'status' => self::$FAIL,
                     'fail_code' => $result['err_code'],
                     'fail_msg' => $result['err_code_des']
                 ];
             } else {
                 return [
-//                    'status' => Config::get('common.refund_confirm.status.failed'),
+                    'status' => self::$FAIL,
                     'fail_code' => $result['err_code'],
                     'fail_msg' => $result['err_code_des']
                 ];
@@ -280,10 +281,10 @@ class WechatRefund
         ];
 
         $params['sign'] = Sign::getSign($params);
-        $result = xml_to_array(
+        $result = Func::xml_to_array(
             Http::post(
                 'https://api.mch.weixin.qq.com/pay/refundquery',
-                array_to_xml($params)
+                Func::array_to_xml($params)
             )
         );
 //        file_put_contents(App::getRuntimePath() . 'refund.log', '【' . date("Y-m-d H:i:s") . '】' . json_encode($result) . PHP_EOL, FILE_APPEND | LOCK_EX);
@@ -325,9 +326,7 @@ class WechatRefund
      *
      * @param string $key
      * @return string|null
-     *
-     * @throws \EasyWeChat\Kernel\Exceptions\Exception
-     */
+     **/
     public function decryptMessage(string $message)
     {
         if (!$message) return null;
@@ -349,27 +348,5 @@ class WechatRefund
         unset($data['sign']);
 
         return $sign == Sign::getSign($data) ? true : false;
-    }
-
-    /**
-     * 异步回调处理成功时返回内容
-     *
-     * @param $msg
-     * @return string
-     */
-    public function notifyReturnSuccess($msg = 'OK')
-    {
-        return "<xml><return_code><![CDATA[SUCCESS]]></return_code><return_msg><![CDATA[{$msg}]]></return_msg></xml>";
-    }
-
-    /**
-     * 异步回调处理失败时返回内容
-     *
-     * @param $msg
-     * @return string
-     */
-    public function notifyReturnFail($msg = 'FAIL')
-    {
-        return "<xml><return_code><![CDATA[FAIL]]></return_code><return_msg><![CDATA[{$msg}]]></return_msg></xml>";
     }
 }

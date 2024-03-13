@@ -1,6 +1,6 @@
 <?php
 
-namespace app\common\traits;
+namespace Cunshi\TpSdk\traits;
 
 /**
  * 初始化搜索条件

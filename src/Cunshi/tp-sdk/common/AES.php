@@ -1,6 +1,8 @@
 <?php
 
-namespace extend\wechat;
+namespace Cunshi\TpSdk\common;
+
+use InvalidArgumentException;
 
 class AES
 {
@@ -8,7 +10,7 @@ class AES
      * @param string $text
      * @param string $key
      * @param string $iv
-     * @param int    $option
+     * @param int $option
      *
      * @return string
      */
@@ -20,10 +22,10 @@ class AES
     }
 
     /**
-     * @param string      $cipherText
-     * @param string      $key
-     * @param string      $iv
-     * @param int         $option
+     * @param string $cipherText
+     * @param string $key
+     * @param string $iv
+     * @param int $option
      * @param string|null $method
      *
      * @return string
@@ -51,7 +53,7 @@ class AES
     public static function validateKey(string $key)
     {
         if (!in_array(strlen($key), [16, 24, 32], true)) {
-            throw new \InvalidArgumentException(sprintf('Key length must be 16, 24, or 32 bytes; got key len (%s).', strlen($key)));
+            throw new InvalidArgumentException(sprintf('Key length must be 16, 24, or 32 bytes; got key len (%s).', strlen($key)));
         }
     }
 
@@ -63,7 +65,7 @@ class AES
     public static function validateIv(string $iv)
     {
         if (!empty($iv) && 16 !== strlen($iv)) {
-            throw new \InvalidArgumentException('IV length must be 16 bytes.');
+            throw new InvalidArgumentException('IV length must be 16 bytes.');
         }
     }
 }
