@@ -8,7 +8,6 @@ use Cunshi\TpSdk\common\Http;
 use Cunshi\TpSdk\common\Random;
 use Cunshi\TpSdk\common\Sign;
 use Cunshi\TpSdk\exception\WechatException;
-use HttpException;
 
 class WechatProfitSharing
 {
@@ -53,7 +52,8 @@ class WechatProfitSharing
         );
 
         if ($result['return_code'] == 'FAIL') {
-            throw new HttpException('communicate_failed', $result['return_msg']);
+            throw  new  WechatException('communicate_failed', $result['return_msg']);
+
         }
 
         return $result;
@@ -82,7 +82,8 @@ class WechatProfitSharing
         );
 
         if ($result['return_code'] == 'FAIL') {
-            throw new HttpException('communicate_failed', $result['return_msg']);
+            throw  new  WechatException('communicate_failed', $result['return_msg']);
+
         }
 
         return $result;
@@ -110,7 +111,8 @@ class WechatProfitSharing
         );
 
         if ($result['return_code'] == 'FAIL') {
-            throw new HttpException('communicate_failed', $result['return_msg']);
+            throw  new  WechatException('communicate_failed', $result['return_msg']);
+
         }
 
         return $result;
