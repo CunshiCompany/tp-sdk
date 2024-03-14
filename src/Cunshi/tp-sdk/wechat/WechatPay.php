@@ -9,11 +9,8 @@ use Cunshi\TpSdk\common\Sign;
 
 use Cunshi\TpSdk\exception\WechatException;
 
-
 class WechatPay
 {
-//    private static $_instance = null;
-
     private $_appId;                // 小程序 appid
     private $_mchId;                // 服务商商户号
     private $_subMchId;             // 子商户号
@@ -26,16 +23,6 @@ class WechatPay
         $this->_appId = $app_id;
         $this->_mchId = $mch_id;
     }
-
-//    public static function getInstance()
-//    {
-//        if (is_null(self::$_instance)) {
-//            self::$_instance = new self();
-//        }
-//
-//        return self::$_instance;
-//    }
-
 
     public function setSubMchId($mch_id)
     {
@@ -68,7 +55,7 @@ class WechatPay
 
     public function paySign($openid, $out_trade_no, $total_fee, $ip)
     {
-        $prepay_id = $this->_unifiedorder($openid, $out_trade_no, $total_fee, $ip);
+        $prepay_id = $this->JsapiUnifiedOrder($openid, $out_trade_no, $total_fee, $ip);
 
         $params = [
             'appId' => $this->_appId,
@@ -82,7 +69,7 @@ class WechatPay
         return $params;
     }
 
-    public function _unifiedOrder($openid, $out_trade_no, $total_fee, $ip)
+    public function JsapiUnifiedOrder($openid, $out_trade_no, $total_fee, $ip)
     {
         $params = [
             'appid' => $this->_appId,
@@ -109,11 +96,43 @@ class WechatPay
 
         if ($result['return_code'] == 'FAIL') {
             throw  new  WechatException('communicate_failed', $result['return_msg']);
-
         }
 
         return $result['prepay_id'];
     }
+
+    public function NativeUnifiedOrder($openid, $out_trade_no, $total_fee, $ip)
+    {
+        $params = [
+            'appid' => $this->_appId,
+            'mch_id' => $this->_mchId,
+            'sub_mch_id' => $this->_subMchId,
+            'nonce_str' => Random::alnum(32),
+            'body' => $this->_orderName,
+            'out_trade_no' => $out_trade_no,
+            'total_fee' => $total_fee,
+            'spbill_create_ip' => $ip,
+            'notify_url' => $this->_notifyUrl,
+            'trade_type' => 'NATIVE',
+            'openid' => $openid,
+            'profit_sharing' => $this->_profitSharing
+        ];
+
+        $params['sign'] = Sign::getSign($params);
+        $result = Func::xml_to_array(
+            Http::post(
+                'https://api.mch.weixin.qq.com/pay/unifiedorder',
+                Func::array_to_xml($params)
+            )
+        );
+
+        if ($result['return_code'] == 'FAIL') {
+            throw  new  WechatException('communicate_failed', $result['return_msg']);
+        }
+
+        return $result['prepay_id'];
+    }
+
 
     /**
      * 异步签名验证

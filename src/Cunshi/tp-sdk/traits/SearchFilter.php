@@ -4,23 +4,22 @@ namespace Cunshi\TpSdk\traits;
 
 /**
  * 初始化搜索条件
- * 
  * @author ltj
  */
 trait SearchFilter
 {
-    protected $search_normals      = [];  // 普通搜索默认配置
-    protected $search_excepts      = [];  // 搜索排除
-    protected $search_fuzzys       = [];  // 模糊搜索默认配置
-    protected $search_betweens     = [];  // 区间搜索默认配置
+    protected $search_normals = [];  // 普通搜索默认配置
+    protected $search_excepts = [];  // 搜索排除
+    protected $search_fuzzys = [];  // 模糊搜索默认配置
+    protected $search_betweens = [];  // 区间搜索默认配置
     protected $search_not_betweens = [];  // 非区间搜索默认配置
-    protected $search_contains     = [];  // 包含搜索默认配置
-    protected $search_querys       = [];  // 原生搜索默认配置
+    protected $search_contains = [];  // 包含搜索默认配置
+    protected $search_querys = [];  // 原生搜索默认配置
 
     /**
      * 根据所传参数组装搜索条件并返回
      *
-     * @param  array $params 需要处理的搜索参数
+     * @param array $params 需要处理的搜索参数
      * @return array
      */
     protected function getConditions($params = [])
@@ -67,9 +66,9 @@ trait SearchFilter
     /**
      * 普通搜索拼装
      *
-     * @param  string $key        键
-     * @param  string $value      值
-     * @param  array  $conditions 搜索条件集
+     * @param string $key 键
+     * @param string $value 值
+     * @param array $conditions 搜索条件集
      * @return void
      */
     private function _setNormalCondition($key, $value, &$conditions)
@@ -92,9 +91,9 @@ trait SearchFilter
     /**
      * 排除搜索拼装
      *
-     * @param  string $key        键
-     * @param  string $value      值
-     * @param  array  $conditions 搜索条件集
+     * @param string $key 键
+     * @param string $value 值
+     * @param array $conditions 搜索条件集
      * @return void
      */
     private function _setExceptCondition($key, $value, &$conditions)
@@ -117,9 +116,9 @@ trait SearchFilter
     /**
      * 模糊搜索拼装
      *
-     * @param  string $key        键
-     * @param  string $value      值
-     * @param  array  $conditions 搜索条件集
+     * @param string $key 键
+     * @param string $value 值
+     * @param array $conditions 搜索条件集
      * @return void
      */
     private function _setFuzzyCondition($key, $value, &$conditions)
@@ -134,9 +133,9 @@ trait SearchFilter
     /**
      * 区间搜索拼装
      *
-     * @param  string $key        键
-     * @param  string $value      值
-     * @param  array  $conditions 搜索条件集
+     * @param string $key 键
+     * @param string $value 值
+     * @param array $conditions 搜索条件集
      * @return void
      */
     private function _setBetweenCondition($key, $value, &$conditions)
@@ -170,9 +169,9 @@ trait SearchFilter
     /**
      * 非区间内搜索拼装
      *
-     * @param  string $key        键
-     * @param  string $value      值
-     * @param  array  $conditions 搜索条件集
+     * @param string $key 键
+     * @param string $value 值
+     * @param array $conditions 搜索条件集
      * @return void
      */
     private function _setNotBetweenCondition($key, $value, &$conditions)
@@ -206,9 +205,9 @@ trait SearchFilter
     /**
      * 包含搜索拼接
      *
-     * @param  string $key        键
-     * @param  string $value      值
-     * @param  array  $conditions 搜索条件集
+     * @param string $key 键
+     * @param string $value 值
+     * @param array $conditions 搜索条件集
      * @return void
      */
     private function _setContainCondition($key, $value, &$conditions)
@@ -223,9 +222,9 @@ trait SearchFilter
     /**
      * 按表达式搜索
      *
-     * @param  string $key        键
-     * @param  object $value      值
-     * @param  array  $conditions 搜索条件集
+     * @param string $key 键
+     * @param object $value 值
+     * @param array $conditions 搜索条件集
      * @return void
      */
     private function _setQueryCondition($value, &$conditions)

@@ -149,13 +149,13 @@ class WechatRefund
     private $_mchCertPath;   // 证书路径
     private $_mchKeyPath;    // 证书 key 路径
 
-    public function __construct($_appId, $_mchId, $_mchKey, $_mchCertPath, $_mchKeyPath)
+    public function __construct($app_Id, $mch_Id, $mch_Key, $mch_CertPath, $mch_KeyPath)
     {
-        $this->_appId = $_appId;
-        $this->_mchId = $_mchId;
-        $this->_mchKey = $_mchKey;
-        $this->_mchCertPath = $_mchCertPath;
-        $this->_mchKeyPath = $_mchKeyPath;
+        $this->_appId = $app_Id;
+        $this->_mchId = $mch_Id;
+        $this->_mchKey = $mch_Key;
+        $this->_mchCertPath = $mch_CertPath;
+        $this->_mchKeyPath = $mch_KeyPath;
     }
 
     public function setSubMchId($mch_id)
@@ -287,7 +287,6 @@ class WechatRefund
                 Func::array_to_xml($params)
             )
         );
-//        file_put_contents(App::getRuntimePath() . 'refund.log', '【' . date("Y-m-d H:i:s") . '】' . json_encode($result) . PHP_EOL, FILE_APPEND | LOCK_EX);
         if ($this->checkNotifySign($result)) {
             if ($result['return_code'] == 'FAIL') {
                 $res = ['status' => false, 'msg' => $result['return_msg']];
