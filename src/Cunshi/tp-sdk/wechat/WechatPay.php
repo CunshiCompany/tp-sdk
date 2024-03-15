@@ -112,6 +112,6 @@ class WechatPay
         $sign = $data['sign'];
         unset($data['sign']);
 
-        return $sign == Sign::getSign($this->_mchKey,$data) ? true : false;
+        return $sign == Sign::getSign($this->_mchKey, $data) ? true : false;
     }
 }
