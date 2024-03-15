@@ -53,7 +53,7 @@ class WechatPay
         return $this;
     }
 
-    public function paySign($openid, $out_trade_no, $total_fee, $ip, $trade_type)
+    public function paySign($openid, $out_trade_no, $total_fee, $ip, $trade_type,$mch_key)
     {
         $Objs = [
             'appid'            => $this->_appId,
@@ -70,7 +70,7 @@ class WechatPay
             'profit_sharing'   => $this->_profitSharing
         ];
 
-        $Objs['sign'] = Sign::getSign($Objs);
+        $Objs['sign'] = Sign::getSign($mch_key,$Objs);
         $result       = Func::xml_to_array(
             Http::post(
                 'https://api.mch.weixin.qq.com/pay/unifiedorder',
@@ -92,7 +92,7 @@ class WechatPay
             'signType'  => 'MD5'
         ];
 
-        $params['paySign'] = Sign::getSign($params);
+        $params['paySign'] = Sign::getSign($mch_key,$params);
         return $params;
     }
 
