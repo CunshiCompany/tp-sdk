@@ -26,7 +26,7 @@ class Func
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($curl, CURLOPT_HEADER, true);
-        $result = curl_exec($curl);
+        $result     = curl_exec($curl);
         $httpStatus = curl_getinfo($curl, CURLINFO_HTTP_CODE);
         curl_close($curl);
 
@@ -171,7 +171,7 @@ class Func
     public static function get_dates_duration($started_at, $ended_at, $unit = 'd', $decimal = 2)
     {
         $started_timestamp = strtotime($started_at);
-        $ended_timestamp = strtotime($ended_at);
+        $ended_timestamp   = strtotime($ended_at);
 
         $per = null;
 
@@ -243,9 +243,9 @@ class Func
             return false;
         }
 
-        $factor = array(7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2);  // 加权因子
+        $factor      = array(7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2);    // 加权因子
         $verify_list = array('1', '0', 'X', '9', '8', '7', '6', '5', '4', '3', '2');  // 校验码对应值
-        $sum = 0;
+        $sum         = 0;
 
         for ($i = 0; $i < strlen($identification_num_base); $i++) {
             if (!is_numeric(substr($identification_num_base, $i, 1))) {
@@ -255,7 +255,7 @@ class Func
             $sum += substr($identification_num_base, $i, 1) * $factor[$i];
         }
 
-        $mod = $sum % 11;
+        $mod           = $sum % 11;
         $verify_number = $verify_list[$mod];
 
         return $verify_number;
@@ -347,13 +347,12 @@ class Func
         $left_len,
         $right_pos,
         $right_len
-    )
-    {
+    ) {
         if (!$str) return '';
         $len = mb_strlen($str, 'utf-8');
 
         if ($len >= 6) {
-            $str_left = mb_substr($str, $left_pos, $left_len, 'utf-8');
+            $str_left  = mb_substr($str, $left_pos, $left_len, 'utf-8');
             $str_right = mb_substr($str, $right_pos, $right_len, 'utf-8');
         } else {
             $str_left = $str_right = '';
@@ -373,12 +372,12 @@ class Func
     public static function save_tmp_file($url, $content, $fname = '')
     {
         $base_path = date('Ymd');
-        $rootPath = dirname(dirname(dirname(__DIR__)));// 三级目录向上遍历到项目根目录
-        $tmps_dir = $rootPath . 'public' . DIRECTORY_SEPARATOR . 'tmps' . DIRECTORY_SEPARATOR . $base_path;
+        $rootPath  = dirname(dirname(dirname(__DIR__)));                                                      // 三级目录向上遍历到项目根目录
+        $tmps_dir  = $rootPath . 'public' . DIRECTORY_SEPARATOR . 'tmps' . DIRECTORY_SEPARATOR . $base_path;
 
         self::mkdir_chmod($tmps_dir);
         $fname = $fname ?: basename($url);                                 //返回路径中的文件名部分
-        $ext = '.' . strtolower(pathinfo(basename($url))['extension']);  //把扩展名转换成小写
+        $ext   = '.' . strtolower(pathinfo(basename($url))['extension']);  //把扩展名转换成小写
         $fpath = $tmps_dir . DIRECTORY_SEPARATOR . md5($url) . $ext;
 
         $fp = fopen($fpath, 'w+');
@@ -388,7 +387,7 @@ class Func
         return [
             'path' => $fpath,
             'name' => $fname,
-            'url' => $url
+            'url'  => $url
         ];
     }
 
@@ -408,7 +407,7 @@ class Func
 
         foreach ($arr as $i => $item) {
             if ($i > 0) {
-                $c = strtoupper(substr($item, 0, 1));
+                $c    = strtoupper(substr($item, 0, 1));
                 $res .= substr_replace($item, $c, 0, 1);
             } else {
                 $res .= $item;
@@ -430,10 +429,10 @@ class Func
         if (!(parse_url($url)['query'] ?? '')) return '';
 
         $params = explode('&', parse_url($url)['query'] ?? '');
-        $res = [];
+        $res    = [];
 
         foreach ($params as $param) {
-            $item = explode('=', $param);
+            $item          = explode('=', $param);
             $res[$item[0]] = $item[1];
         }
 

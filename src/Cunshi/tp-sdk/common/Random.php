@@ -99,14 +99,14 @@ class Random
             return $num == 1 ? '' : [];
         }
         if ($num >= count($ps) && $unique) {
-            $res = array_keys($ps);
+            $res  = array_keys($ps);
             return $num == 1 ? $res[0] : $res;
         }
         $max_exp = 0;
-        $res = [];
+        $res     = [];
         foreach ($ps as $key => $value) {
             $value = substr($value, 0, stripos($value, ".") + 6);
-            $exp = strlen(strchr($value, '.')) - 1;
+            $exp   = strlen(strchr($value, '.')) - 1;
             if ($exp > $max_exp) {
                 $max_exp = $exp;
             }

@@ -40,7 +40,7 @@ class Tree
         foreach ($list as $item) {
             if ($item[$this->_pid] == $root) {
                 $item[$this->_child] = $this->listToTree($list, $item[$this->_pk]);
-                $trees[] = $item;
+                $trees[]             = $item;
             }
         }
 
@@ -61,10 +61,10 @@ class Tree
         foreach ($list as $item) {
             if ($item[$this->_pk] == $id) {
                 $arr[] = $item[$this->_pk];
-                $arr = array_merge($this->getParentIds($list, $item[$this->_pid]), $arr);
+                $arr   = array_merge($this->getParentIds($list, $item[$this->_pid]), $arr);
             }
         }
-        
+
         return $arr;
     }
 
@@ -82,7 +82,7 @@ class Tree
         foreach ($list as $item) {
             if ($item[$this->_pid] == $id) {
                 $arr[] = $item[$this->_pk];
-                $arr = array_merge($this->getChildIds($list, $item[$this->_pk]), $arr);
+                $arr   = array_merge($this->getChildIds($list, $item[$this->_pk]), $arr);
             }
         }
 

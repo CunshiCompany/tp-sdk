@@ -10,7 +10,7 @@ class Sign
         if (!$params) return '';
         ksort($params);
         $params_str = Func::format_params($params, false) . '&key=' . $mch_key;
-        $sign_str = '';
+        $sign_str   = '';
 
         if ($sign_type == 'MD5') {
             $sign_str = md5($params_str);

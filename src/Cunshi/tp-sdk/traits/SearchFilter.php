@@ -8,13 +8,13 @@ namespace Cunshi\TpSdk\traits;
  */
 trait SearchFilter
 {
-    protected $search_normals = [];  // 普通搜索默认配置
-    protected $search_excepts = [];  // 搜索排除
-    protected $search_fuzzys = [];  // 模糊搜索默认配置
-    protected $search_betweens = [];  // 区间搜索默认配置
+    protected $search_normals      = [];  // 普通搜索默认配置
+    protected $search_excepts      = [];  // 搜索排除
+    protected $search_fuzzys       = [];  // 模糊搜索默认配置
+    protected $search_betweens     = [];  // 区间搜索默认配置
     protected $search_not_betweens = [];  // 非区间搜索默认配置
-    protected $search_contains = [];  // 包含搜索默认配置
-    protected $search_querys = [];  // 原生搜索默认配置
+    protected $search_contains     = [];  // 包含搜索默认配置
+    protected $search_querys       = [];  // 原生搜索默认配置
 
     /**
      * 根据所传参数组装搜索条件并返回

@@ -56,22 +56,22 @@ class WechatPay
     public function paySign($openid, $out_trade_no, $total_fee, $ip, $trade_type)
     {
         $Objs = [
-            'appid' => $this->_appId,
-            'mch_id' => $this->_mchId,
-            'sub_mch_id' => $this->_subMchId,
-            'nonce_str' => Random::alnum(32),
-            'body' => $this->_orderName,
-            'out_trade_no' => $out_trade_no,
-            'total_fee' => $total_fee,
+            'appid'            => $this->_appId,
+            'mch_id'           => $this->_mchId,
+            'sub_mch_id'       => $this->_subMchId,
+            'nonce_str'        => Random::alnum(32),
+            'body'             => $this->_orderName,
+            'out_trade_no'     => $out_trade_no,
+            'total_fee'        => $total_fee,
             'spbill_create_ip' => $ip,
-            'notify_url' => $this->_notifyUrl,
-            'trade_type' => $trade_type, //JSAPI为Jsapi支付、NATIVE为Native支付
-            'openid' => $openid,
-            'profit_sharing' => $this->_profitSharing
+            'notify_url'       => $this->_notifyUrl,
+            'trade_type'       => $trade_type,           //JSAPI为Jsapi支付、NATIVE为Native支付
+            'openid'           => $openid,
+            'profit_sharing'   => $this->_profitSharing
         ];
 
         $Objs['sign'] = Sign::getSign($Objs);
-        $result = Func::xml_to_array(
+        $result       = Func::xml_to_array(
             Http::post(
                 'https://api.mch.weixin.qq.com/pay/unifiedorder',
                 Func::array_to_xml($Objs)
@@ -85,11 +85,11 @@ class WechatPay
         $prepay_id = $result['prepay_id'];
 
         $params = [
-            'appId' => $this->_appId,
+            'appId'     => $this->_appId,
             'timeStamp' => time(),
-            'nonceStr' => Random::alnum(32),
-            'package' => 'prepay_id=' . $prepay_id,
-            'signType' => 'MD5'
+            'nonceStr'  => Random::alnum(32),
+            'package'   => 'prepay_id=' . $prepay_id,
+            'signType'  => 'MD5'
         ];
 
         $params['paySign'] = Sign::getSign($params);

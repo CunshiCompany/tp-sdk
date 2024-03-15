@@ -40,14 +40,14 @@ class Http
      */
     public static function sendRequest($url, $params = [], $method = 'POST', $options = [])
     {
-        $method = strtoupper($method);
-        $protocol = substr($url, 0, 5);
+        $method       = strtoupper($method);
+        $protocol     = substr($url, 0, 5);
         $query_string = is_array($params) ? http_build_query($params) : $params;
 
-        $ch = curl_init();
+        $ch       = curl_init();
         $defaults = [];
         if ('GET' == $method) {
-            $geturl = $query_string ? $url . (stripos($url, "?") !== false ? "&" : "?") . $query_string : $url;
+            $geturl                = $query_string ? $url . (stripos($url, "?") !== false ? "&" : "?") . $query_string : $url;
             $defaults[CURLOPT_URL] = $geturl;
         } else {
             $defaults[CURLOPT_URL] = $url;
@@ -59,12 +59,12 @@ class Http
             $defaults[CURLOPT_POSTFIELDS] = $query_string;
         }
 
-        $defaults[CURLOPT_HEADER] = false;
-        $defaults[CURLOPT_USERAGENT] = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.98 Safari/537.36";
+        $defaults[CURLOPT_HEADER]         = false;
+        $defaults[CURLOPT_USERAGENT]      = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.98 Safari/537.36";
         $defaults[CURLOPT_FOLLOWLOCATION] = true;
         $defaults[CURLOPT_RETURNTRANSFER] = true;
         $defaults[CURLOPT_CONNECTTIMEOUT] = 60;
-        $defaults[CURLOPT_TIMEOUT] = 60;
+        $defaults[CURLOPT_TIMEOUT]        = 60;
 
         // disable 100-continue
         curl_setopt($ch, CURLOPT_HTTPHEADER, array('Expect:'));
@@ -74,14 +74,14 @@ class Http
             $defaults[CURLOPT_SSL_VERIFYHOST] = false;
         }
 
-        curl_setopt_array($ch, (array)$options + $defaults);
+        curl_setopt_array($ch, (array) $options + $defaults);
 
         $ret = curl_exec($ch);
         $err = curl_error($ch);
 
         if (false === $ret || !empty($err)) {
             $errno = curl_errno($ch);
-            $info = curl_getinfo($ch);
+            $info  = curl_getinfo($ch);
             curl_close($ch);
             return [
                 'ret'   => false,
@@ -125,7 +125,7 @@ class Http
         //构造查询的参数
         if ($method == 'GET' && $post_string) {
             $parts['query'] = isset($parts['query']) ? $parts['query'] . '&' . $post_string : $post_string;
-            $post_string = '';
+            $post_string    = '';
         }
         $parts['query'] = isset($parts['query']) && $parts['query'] ? '?' . $parts['query'] : '';
         //发送socket请求,获得连接句柄
@@ -135,7 +135,7 @@ class Http
         }
         //设置超时时间
         stream_set_timeout($fp, 3);
-        $out = "{$method} {$parts['path']}{$parts['query']} HTTP/1.1\r\n";
+        $out  = "{$method} {$parts['path']}{$parts['query']} HTTP/1.1\r\n";
         $out .= "Host: {$parts['host']}\r\n";
         $out .= "Content-Type: application/x-www-form-urlencoded\r\n";
         $out .= "Content-Length: " . strlen($post_string) . "\r\n";

@@ -9,7 +9,6 @@
     "ext-libxml": "*",
     "ext-simplexml": "*",
     "ext-openssl": "*",
-    "ext-http": "*",
     "ext-mbstring": "*"
   },
   "license": "MIT",

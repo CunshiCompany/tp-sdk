@@ -30,7 +30,7 @@ class WXBizDataCrypt
      */
     public function __construct($app_id, $session_key)
     {
-        $this->_appid = $app_id;
+        $this->_appid      = $app_id;
         $this->_sessionKey = $session_key;
     }
 
@@ -53,11 +53,11 @@ class WXBizDataCrypt
             return self::$IllegalIv;
         }
 
-        $aes_key = base64_decode($this->_sessionKey);
-        $aes_iv = base64_decode($iv);
+        $aes_key    = base64_decode($this->_sessionKey);
+        $aes_iv     = base64_decode($iv);
         $aes_cipher = base64_decode($encrypted_data);
-        $result = openssl_decrypt($aes_cipher, 'AES-128-CBC', $aes_key, 1, $aes_iv);
-        $obj = json_decode($result);
+        $result     = openssl_decrypt($aes_cipher, 'AES-128-CBC', $aes_key, 1, $aes_iv);
+        $obj        = json_decode($result);
 
         if ($obj == null || $obj->watermark->appid != $this->_appid) {
             return self::$IllegalBuffer;

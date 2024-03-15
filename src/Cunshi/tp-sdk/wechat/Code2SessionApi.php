@@ -12,9 +12,9 @@ class Code2SessionApi
 
     public function __construct($app_Id, $secret, $data)
     {
-        $this->_appId = $app_Id;
+        $this->_appId  = $app_Id;
         $this->_secret = $secret;
-        $this->_code = $data['code'];
+        $this->_code   = $data['code'];
     }
 
     public function getRes()
@@ -23,9 +23,9 @@ class Code2SessionApi
             Http::get(
                 'https://api.weixin.qq.com/sns/jscode2session',
                 [
-                    'appid' => $this->_appId,
-                    'secret' => $this->_secret,
-                    'js_code' => $this->_code,
+                    'appid'      => $this->_appId,
+                    'secret'     => $this->_secret,
+                    'js_code'    => $this->_code,
                     'grant_type' => 'authorization_code'
                 ]
             ),

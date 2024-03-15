@@ -25,5 +25,4 @@ class WechatNotifyReturn
     {
         return "<xml><return_code><![CDATA[FAIL]]></return_code><return_msg><![CDATA[{$msg}]]></return_msg></xml>";
     }
-
 }
