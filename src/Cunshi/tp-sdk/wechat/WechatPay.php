@@ -18,10 +18,13 @@ class WechatPay
     private $_notifyUrl;            // 支付成功回调地址
     private $_profitSharing = 'N';  // 是否需要分账
 
-    public function __construct($app_id, $mch_id)
+    private $_mchKey;  //商户密钥
+
+    public function __construct($app_id, $mch_id, $mch_key)
     {
-        $this->_appId = $app_id;
-        $this->_mchId = $mch_id;
+        $this->_appId  = $app_id;
+        $this->_mchId  = $mch_id;
+        $this->_mchKey = $mch_key;
     }
 
     public function setSubMchId($mch_id)
@@ -53,7 +56,7 @@ class WechatPay
         return $this;
     }
 
-    public function paySign($openid, $out_trade_no, $total_fee, $ip, $trade_type,$mch_key)
+    public function paySign($openid, $out_trade_no, $total_fee, $ip, $trade_type)
     {
         $Objs = [
             'appid'            => $this->_appId,
@@ -70,7 +73,7 @@ class WechatPay
             'profit_sharing'   => $this->_profitSharing
         ];
 
-        $Objs['sign'] = Sign::getSign($mch_key,$Objs);
+        $Objs['sign'] = Sign::getSign($this->_mchKey, $Objs);
         $result       = Func::xml_to_array(
             Http::post(
                 'https://api.mch.weixin.qq.com/pay/unifiedorder',
@@ -92,7 +95,7 @@ class WechatPay
             'signType'  => 'MD5'
         ];
 
-        $params['paySign'] = Sign::getSign($mch_key,$params);
+        $params['paySign'] = Sign::getSign($this->_mchKey, $params);
         return $params;
     }
 
@@ -109,6 +112,6 @@ class WechatPay
         $sign = $data['sign'];
         unset($data['sign']);
 
-        return $sign == Sign::getSign($data) ? true : false;
+        return $sign == Sign::getSign($this->_mchKey,$data) ? true : false;
     }
 }

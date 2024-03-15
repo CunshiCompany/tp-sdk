@@ -10,7 +10,6 @@ use Cunshi\TpSdk\common\Sign;
 
 class WechatRefund
 {
-    private static $_instance = null;
 
     /**
      * 原因：系统超时
@@ -195,7 +194,7 @@ class WechatRefund
             'notify_url'    => $this->_notifyUrl,   // 通知地址
         ];
 
-        $params['sign'] = Sign::getSign($params);
+        $params['sign'] = Sign::getSign($this->_mchKey,$params);
         $result         = Func::xml_to_array(
             Http::post(
                 'https://api.mch.weixin.qq.com/secapi/pay/refund',
@@ -280,7 +279,7 @@ class WechatRefund
             'out_refund_no' => $out_refund_no,      // 商户系统内部退款单号
         ];
 
-        $params['sign'] = Sign::getSign($params);
+        $params['sign'] = Sign::getSign($this->_mchKey,$params);
         $result         = Func::xml_to_array(
             Http::post(
                 'https://api.mch.weixin.qq.com/pay/refundquery',
@@ -345,6 +344,6 @@ class WechatRefund
         $sign = $data['sign'];
         unset($data['sign']);
 
-        return $sign == Sign::getSign($data) ? true : false;
+        return $sign == Sign::getSign($this->_mchKey,$data) ? true : false;
     }
 }
