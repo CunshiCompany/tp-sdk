@@ -148,13 +148,13 @@ class WechatRefund
     private $_mchCertPath;  // 证书路径
     private $_mchKeyPath;   // 证书 key 路径
 
-    public function __construct($app_Id, $mch_Id, $mch_Key, $mch_CertPath, $mch_KeyPath)
+    public function __construct($app_id, $mch_id, $mch_key, $mch_certPath, $mch_keyPath)
     {
-        $this->_appId       = $app_Id;
-        $this->_mchId       = $mch_Id;
-        $this->_mchKey      = $mch_Key;
-        $this->_mchCertPath = $mch_CertPath;
-        $this->_mchKeyPath  = $mch_KeyPath;
+        $this->_appId       = $app_id;
+        $this->_mchId       = $mch_id;
+        $this->_mchKey      = $mch_key;
+        $this->_mchCertPath = $mch_certPath;
+        $this->_mchKeyPath  = $mch_keyPath;
     }
 
     public function setSubMchId($mch_id)

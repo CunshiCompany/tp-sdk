@@ -10,9 +10,9 @@ class Code2SessionApi
     private $_secret;
     private $_code;
 
-    public function __construct($app_Id, $secret, $data)
+    public function __construct($app_id, $secret, $data)
     {
-        $this->_appId  = $app_Id;
+        $this->_appId  = $app_id;
         $this->_secret = $secret;
         $this->_code   = $data['code'];
     }
