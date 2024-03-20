@@ -144,17 +144,16 @@ class WechatRefund
     private $_subMchId;   // 子商户号
     private $_notifyUrl;  // 退款成功回调地址
     private $_mchKey;     // 商户号密钥
-
     private $_mchCertPath;  // 证书路径
     private $_mchKeyPath;   // 证书 key 路径
 
-    public function __construct($app_id, $mch_id, $mch_key, $mch_certPath, $mch_keyPath)
+    public function __construct($app_id, $mch_id, $mch_key, $mch_cert_path, $mch_key_path)
     {
         $this->_appId       = $app_id;
         $this->_mchId       = $mch_id;
         $this->_mchKey      = $mch_key;
-        $this->_mchCertPath = $mch_certPath;
-        $this->_mchKeyPath  = $mch_keyPath;
+        $this->_mchCertPath = $mch_cert_path;
+        $this->_mchKeyPath  = $mch_key_path;
     }
 
     public function setSubMchId($mch_id)
@@ -195,7 +194,8 @@ class WechatRefund
         ];
 
         $params['sign'] = Sign::getSign($this->_mchKey, $params);
-        $result         = Func::xml_to_array(
+
+        $result = Func::xml_to_array(
             Http::post(
                 'https://api.mch.weixin.qq.com/secapi/pay/refund',
                 Func::array_to_xml($params),
@@ -280,7 +280,8 @@ class WechatRefund
         ];
 
         $params['sign'] = Sign::getSign($this->_mchKey, $params);
-        $result         = Func::xml_to_array(
+
+        $result = Func::xml_to_array(
             Http::post(
                 'https://api.mch.weixin.qq.com/pay/refundquery',
                 Func::array_to_xml($params)
@@ -311,8 +312,9 @@ class WechatRefund
             }
         } else {
             $res = [
-                'status' => false,
-                //                'msg' => config('error.not_found_order')
+                'status'    => false,
+                'fail_code' => '',
+                'fail_msg'  => ''
             ];
         }
         return $res;

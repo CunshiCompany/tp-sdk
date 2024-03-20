@@ -13,19 +13,18 @@ class WechatProfitSharing
 {
     private $_appId;
     private $_mchId;
-
     private $_mchCertPath;
-
     private $_mchKeyPath;
-    private $_mchKey;  //商户密钥
+    //商户密钥
+    private $_mchKey;
 
 
-    public function __construct($app_id, $mch_id, $mch_certPath, $mch_keyPath, $mch_key)
+    public function __construct($app_id, $mch_id, $mch_cert_path, $mch_key_path, $mch_key)
     {
         $this->_appId       = $app_id;
         $this->_mchId       = $mch_id;
-        $this->_mchCertPath = $mch_certPath;
-        $this->_mchKeyPath  = $mch_keyPath;
+        $this->_mchCertPath = $mch_cert_path;
+        $this->_mchKeyPath  = $mch_key_path;
         $this->_mchKey      = $mch_key;
     }
 
@@ -37,16 +36,16 @@ class WechatProfitSharing
     public function addReceiver($merchant_id, $receiver)
     {
         $params = [
-            'appid'  => $this->_appId,
-            'mch_id' => $this->_mchId,
-            // 分账出资商户号
-            'sub_mch_id' => $merchant_id,
+            'appid'      => $this->_appId,
+            'mch_id'     => $this->_mchId,
+            'sub_mch_id' => $merchant_id,  // 分账出资商户号
             'nonce_str'  => Random::alnum(32),
             'receiver'   => json_encode($receiver, JSON_UNESCAPED_UNICODE)
         ];
 
         $params['sign'] = Sign::getSign($this->_mchKey, $params, 'HMAC-SHA256');
-        $result         = Func::xml_to_array(
+
+        $result = Func::xml_to_array(
             Http::post(
                 'https://api.mch.weixin.qq.com/pay/profitsharingaddreceiver',
                 Func::array_to_xml($params)
@@ -68,14 +67,14 @@ class WechatProfitSharing
     public function maxRatio($merchant_id)
     {
         $params = [
-            'mch_id' => $this->_mchId,
-            // 分账出资商户号
-            'sub_mch_id' => $merchant_id,
+            'mch_id'     => $this->_mchId,
+            'sub_mch_id' => $merchant_id,  // 分账出资商户号
             'nonce_str'  => Random::alnum(32)
         ];
 
         $params['sign'] = Sign::getSign($this->_mchKey, $params, 'HMAC-SHA256');
-        $result         = Func::xml_to_array(
+
+        $result = Func::xml_to_array(
             Http::post(
                 'https://api.mch.weixin.qq.com/pay/profitsharingmerchantratioquery',
                 Func::array_to_xml($params)
@@ -103,7 +102,8 @@ class WechatProfitSharing
         ];
 
         $params['sign'] = Sign::getSign($this->_mchKey, $params, 'HMAC-SHA256');
-        $result         = Func::xml_to_array(
+
+        $result = Func::xml_to_array(
             Http::post(
                 'https://api.mch.weixin.qq.com/pay/profitsharingorderamountquery',
                 Func::array_to_xml($params)
@@ -138,7 +138,8 @@ class WechatProfitSharing
         ];
 
         $params['sign'] = Sign::getSign($this->_mchKey, $params, 'HMAC-SHA256');
-        $result         = Func::xml_to_array(
+
+        $result = Func::xml_to_array(
             Http::post(
                 'https://api.mch.weixin.qq.com/secapi/pay/profitsharing',
                 Func::array_to_xml($params),

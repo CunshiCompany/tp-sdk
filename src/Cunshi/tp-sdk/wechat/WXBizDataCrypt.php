@@ -10,7 +10,7 @@ namespace Cunshi\TpSdk\wechat;
  */
 class WXBizDataCrypt
 {
-    private $_appid;
+    private $_appId;
     private $_sessionKey;
 
     public static $OK = 0;
@@ -30,7 +30,7 @@ class WXBizDataCrypt
      */
     public function __construct($app_id, $session_key)
     {
-        $this->_appid      = $app_id;
+        $this->_appId      = $app_id;
         $this->_sessionKey = $session_key;
     }
 
@@ -59,7 +59,7 @@ class WXBizDataCrypt
         $result     = openssl_decrypt($aes_cipher, 'AES-128-CBC', $aes_key, 1, $aes_iv);
         $obj        = json_decode($result);
 
-        if ($obj == null || $obj->watermark->appid != $this->_appid) {
+        if ($obj == null || $obj->watermark->appid != $this->_appId) {
             return self::$IllegalBuffer;
         }
 

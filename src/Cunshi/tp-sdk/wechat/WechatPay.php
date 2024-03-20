@@ -11,14 +11,20 @@ use Cunshi\TpSdk\exception\WechatException;
 
 class WechatPay
 {
-    private $_appId;                // 小程序 appid
-    private $_mchId;                // 服务商商户号
-    private $_subMchId;             // 子商户号
-    private $_orderName;            // 订单名称
-    private $_notifyUrl;            // 支付成功回调地址
-    private $_profitSharing = 'N';  // 是否需要分账
-
-    private $_mchKey;  //商户密钥
+    // 小程序 appid
+    private $_appId;
+    // 服务商商户号
+    private $_mchId;
+    // 子商户号
+    private $_subMchId;
+    // 订单名称
+    private $_orderName;
+    // 支付成功回调地址
+    private $_notifyUrl;
+    // 是否需要分账
+    private $_profitSharing = 'N';
+    //商户密钥
+    private $_mchKey;
 
     public function __construct($app_id, $mch_id, $mch_key)
     {
@@ -56,9 +62,19 @@ class WechatPay
         return $this;
     }
 
-    public function paySign($openid, $out_trade_no, $total_fee, $ip, $trade_type)
+    public function jsAPIPay($openid, $out_trade_no, $total_fee, $ip)
     {
-        $Objs = [
+        $this->_pay($openid, $out_trade_no, $total_fee, $ip, 'JSAPI');
+    }
+
+    public function nativePay($openid, $out_trade_no, $total_fee, $ip)
+    {
+        $this->_pay($openid, $out_trade_no, $total_fee, $ip, 'NATIVE');
+    }
+
+    private function _pay($openid, $out_trade_no, $total_fee, $ip, $trade_type)
+    {
+        $objs = [
             'appid'            => $this->_appId,
             'mch_id'           => $this->_mchId,
             'sub_mch_id'       => $this->_subMchId,
@@ -73,11 +89,12 @@ class WechatPay
             'profit_sharing'   => $this->_profitSharing
         ];
 
-        $Objs['sign'] = Sign::getSign($this->_mchKey, $Objs);
-        $result       = Func::xml_to_array(
+        $objs['sign'] = Sign::getSign($this->_mchKey, $objs);
+
+        $result = Func::xml_to_array(
             Http::post(
                 'https://api.mch.weixin.qq.com/pay/unifiedorder',
-                Func::array_to_xml($Objs)
+                Func::array_to_xml($objs)
             )
         );
 
